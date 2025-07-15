@@ -1,4 +1,4 @@
-# firefly_chat_mobile
+# Firefly Chat App
 
 A new Flutter project.
 

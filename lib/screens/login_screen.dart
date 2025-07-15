@@ -1,9 +1,18 @@
-import 'package:firefly_chat_mobile/components/custom_button.dart';
-import 'package:firefly_chat_mobile/components/custom_text_field.dart';
-import 'package:firefly_chat_mobile/components/password_text_field.dart';
-import 'package:firefly_chat_mobile/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import 'package:firefly_chat_mobile/app_routes.dart';
+import 'package:firefly_chat_mobile/theme/app_colors.dart';
+import 'package:firefly_chat_mobile/services/auth_service.dart';
+import 'package:firefly_chat_mobile/services/http_service.dart';
+import 'package:firefly_chat_mobile/providers/user_provider.dart';
+import 'package:firefly_chat_mobile/components/custom_button.dart';
+import 'package:firefly_chat_mobile/@exceptions/api_exceptions.dart';
+import 'package:firefly_chat_mobile/components/custom_text_field.dart';
+import 'package:firefly_chat_mobile/components/error_alert_dialog.dart';
+import 'package:firefly_chat_mobile/components/password_text_field.dart';
+import 'package:firefly_chat_mobile/@mixins/form_validations_mixin.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,7 +21,71 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with FormValidationsMixin {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final Map<String, Object> formData = <String, Object>{};
+
+  bool _isLoading = false;
+
+  Future<void> handleLogin() async {
+    setState(() => _isLoading = true);
+
+    final bool isValidForm = formKey.currentState?.validate() ?? false;
+
+    if (!isValidForm) {
+      print('Invalid form!');
+      setState(() => _isLoading = false);
+      return;
+    }
+
+    formKey.currentState?.save();
+
+    try {
+      final httpService = HttpService();
+      final authService = AuthService();
+
+      print('form data: $formData');
+
+      final response = await httpService.post(
+        endpoint: 'auth/signin/credentials',
+        data: {'email': formData['email'], 'password': formData['password']},
+      );
+
+      authService.saveToken(response['token']);
+
+      if (context.mounted) {
+        await Provider.of<UserProvider>(context, listen: false).loadUserData();
+
+        Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+      }
+    } on ApiExceptions catch (error) {
+      print('Login error: $error');
+
+      if (context.mounted) {
+        ErrorAlertDialog.showDialogError(
+          context: context,
+          title: 'Erro de autenticação',
+          code: error.code,
+          message: error.message,
+          description:
+              'Credenciais inválidas! Por favor, verifique seu e-mail e senha e tente novamente.',
+        );
+      }
+    } catch (error) {
+      print('Unexpected Login error: $error');
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Aconteceu um erro inesperado. Tente novamente'),
+          ),
+        );
+      }
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -44,20 +117,50 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 250,
                   ),
                   const SizedBox(height: 20),
-                  CustomTextField(
-                    hintText: 'E-mail',
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 10),
-                  PasswordTextField(hintText: 'Senha'),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomButton(label: 'Entrar', onPressed: () {}),
-                      ),
-                    ],
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          hintText: 'E-mail',
+                          enabled: !_isLoading,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) => combine([
+                            () => isNotEmpty(value),
+                            () => isEmail(
+                              value,
+                              'Por favor, informe um e-mail válido.',
+                            ),
+                          ]),
+                          onSaved: (value) {
+                            formData['email'] = value ?? '';
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        PasswordTextField(
+                          hintText: 'Senha',
+                          enabled: !_isLoading,
+                          validator: isNotEmpty,
+                          onSaved: (value) {
+                            formData['password'] = value ?? '';
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomButton(
+                                label: 'Entrar',
+                                isLoading: _isLoading,
+                                disabled: _isLoading,
+                                onPressed: () => handleLogin(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 10),
                   const Divider(),

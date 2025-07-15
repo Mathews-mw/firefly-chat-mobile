@@ -2,27 +2,31 @@ import 'package:firefly_chat_mobile/@types/role.dart';
 
 class User {
   final String id;
+  final String name;
   final String username;
   final String email;
   final String? avatarUrl;
   final Role role;
   final bool isActive;
   final DateTime createdAt;
-  final DateTime? updatedAt;
 
   const User({
     required this.id,
+    required this.name,
     required this.username,
     required this.email,
     this.avatarUrl,
     required this.role,
     required this.isActive,
     required this.createdAt,
-    this.updatedAt,
   });
 
   set id(String id) {
     this.id = id;
+  }
+
+  set name(String name) {
+    this.name = name;
   }
 
   set username(String username) {
@@ -49,12 +53,26 @@ class User {
     this.createdAt = createdAt;
   }
 
-  set updatedAt(DateTime? updatedAt) {
-    this.updatedAt = updatedAt;
+  factory User.fromJson(Map<String, dynamic> json) {
+    final user = User(
+      id: json['id'],
+      name: json['name'],
+      username: json['username'],
+      email: json['email'],
+      avatarUrl: json['avatar_url'],
+      role: Role.values.firstWhere(
+        (e) => e.value == json['role'],
+        orElse: () => Role.member,
+      ),
+      isActive: json['is_active'],
+      createdAt: DateTime.parse(json['created_at']),
+    );
+
+    return user;
   }
 
   @override
   String toString() {
-    return 'User(id: $id, username: $username, email: $email, avatarUrl: $avatarUrl, role: $role, isActive: $isActive, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'User(id: $id, name: $name, username: $username, email: $email, role: $role, avatarUrl: $avatarUrl, isActive: $isActive, createdAt: $createdAt)';
   }
 }
