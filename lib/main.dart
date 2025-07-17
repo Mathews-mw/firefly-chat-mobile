@@ -1,3 +1,5 @@
+import 'package:firefly_chat_mobile/providers/friendship-provider.dart';
+import 'package:firefly_chat_mobile/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,14 +19,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => UserProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => FriendshipProvider()),
+      ],
       child: MaterialApp(
         title: 'Firefly Chat',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrangeAccent),
-          fontFamily: 'Rany',
-        ),
+        theme: darkTheme,
         initialRoute: AppRoutes.login,
         routes: {
           AppRoutes.login: (ctx) => LoginScreen(),

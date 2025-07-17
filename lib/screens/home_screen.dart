@@ -1,6 +1,11 @@
-import 'package:firefly_chat_mobile/screens/chat_screen.dart';
-import 'package:firefly_chat_mobile/screens/friends_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+
+import 'package:firefly_chat_mobile/theme/app_colors.dart';
+import 'package:firefly_chat_mobile/screens/chat_screen.dart';
+import 'package:firefly_chat_mobile/components/app_drawer.dart';
+import 'package:firefly_chat_mobile/screens/friends_screen.dart';
+import 'package:firefly_chat_mobile/components/custom_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,19 +19,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+    void openDrawer() {
+      scaffoldKey.currentState?.openDrawer();
+    }
+
     return Scaffold(
+      key: scaffoldKey,
       appBar: _currentScreenIndex == 0
-          ? AppBar(
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              title: const Text('Home'),
-            )
+          ? CustomAppBar(title: 'Home', onOpenDrawer: openDrawer)
           : null,
+      drawer: const AppDrawer(),
       body: <Widget>[
         Center(child: Text('Home screen')),
         ChatScreen(),
         FriendsScreen(),
       ][_currentScreenIndex],
       bottomNavigationBar: NavigationBar(
+        backgroundColor: AppColors.neutral800,
         selectedIndex: _currentScreenIndex,
         onDestinationSelected: (index) {
           setState(() {
@@ -34,9 +45,18 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         destinations: [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.chat_rounded), label: 'Chat'),
-          NavigationDestination(icon: Icon(Icons.people), label: 'Amigos'),
+          NavigationDestination(
+            icon: Icon(PhosphorIconsFill.house),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(PhosphorIconsFill.chatText),
+            label: 'Chat',
+          ),
+          NavigationDestination(
+            icon: Icon(PhosphorIconsFill.users),
+            label: 'Amigos',
+          ),
         ],
       ),
     );
