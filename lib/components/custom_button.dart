@@ -48,10 +48,7 @@ class CustomButton extends StatelessWidget {
         disabledBackgroundColor: Color.fromRGBO(251, 146, 60, 0.4),
         disabledForegroundColor: AppColors.neutral300,
         backgroundColor: variant != null ? variant!.color : AppColors.primary,
-        foregroundColor:
-            (variant == Variant.muted || variant == Variant.secondary)
-            ? AppColors.neutral800
-            : AppColors.foreground,
+        foregroundColor: AppColors.neutral800,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),

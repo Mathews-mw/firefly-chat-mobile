@@ -1,4 +1,7 @@
+import 'package:firefly_chat_mobile/app_routes.dart';
+import 'package:firefly_chat_mobile/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -20,6 +23,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final ScrollController _scrollController = ScrollController();
+  final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
 
   @override
   void initState() {
@@ -87,13 +91,56 @@ class _FriendsScreenState extends State<FriendsScreen> {
   void dispose() {
     super.dispose();
     _scrollController.dispose();
+    _buttonFocusNode.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: CustomAppBar(title: 'Amigos', onOpenDrawer: openDrawer),
+      appBar: CustomAppBar(
+        title: 'Amigos',
+        onOpenDrawer: openDrawer,
+        actions: [
+          MenuAnchor(
+            childFocusNode: _buttonFocusNode,
+            menuChildren: [
+              MenuItemButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(AppRoutes.addFriend);
+                },
+                child: const Text('Adicionar amigo'),
+              ),
+              MenuItemButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(AppRoutes.pendingInvitations);
+                },
+                child: const Text('Convites pendentes'),
+              ),
+              MenuItemButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(AppRoutes.sentInvitations);
+                },
+                child: const Text('Convites enviados'),
+              ),
+            ],
+            builder: (_, MenuController controller, Widget? child) {
+              return IconButton(
+                color: AppColors.foreground,
+                focusNode: _buttonFocusNode,
+                onPressed: () {
+                  if (controller.isOpen) {
+                    controller.close();
+                  } else {
+                    controller.open();
+                  }
+                },
+                icon: const Icon(Icons.more_vert),
+              );
+            },
+          ),
+        ],
+      ),
       drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

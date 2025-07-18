@@ -75,6 +75,68 @@ class HttpService {
     }
   }
 
+  Future<dynamic> put(String endpoint, Map<String, dynamic> data) async {
+    _headers.clear();
+
+    final token = await AuthService().getToken();
+
+    _headers['Authorization'] = 'Bearer $token';
+    _headers['Content-Type'] = "application/json";
+
+    try {
+      final response = await http.put(
+        Uri.parse("$_baseUrl/$endpoint"),
+        headers: _headers,
+        body: jsonEncode(data),
+      );
+
+      return _handleResponse(response);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> patch(String endpoint, [Map<String, dynamic>? data]) async {
+    final token = await AuthService().getToken();
+
+    try {
+      final request = http.Request('PATCH', Uri.parse("$_baseUrl/$endpoint"));
+
+      request.headers.addAll({"Authorization": 'Bearer $token'});
+
+      if (data != null) {
+        request.headers.addAll({"Content-Type": 'application/json'});
+        request.body = jsonEncode(data);
+      }
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      return _handleResponse(response);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> delete(String endpoint) async {
+    _headers.clear();
+
+    final token = await AuthService().getToken();
+
+    _headers['Authorization'] = 'Bearer $token';
+
+    try {
+      final response = await http.delete(
+        Uri.parse("$_baseUrl/$endpoint"),
+        headers: _headers,
+      );
+
+      return _handleResponse(response);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   dynamic _handleResponse(http.Response response) {
     final data = jsonDecode(response.body);
 

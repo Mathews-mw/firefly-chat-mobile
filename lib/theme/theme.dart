@@ -9,4 +9,12 @@ final ThemeData darkTheme = ThemeData(
   colorSchemeSeed: AppColors.primary,
   fontFamily: 'Rany',
   scaffoldBackgroundColor: AppColors.neutral900,
+  menuTheme: MenuThemeData(
+    style: MenuStyle(
+      backgroundColor: WidgetStateProperty.all(AppColors.neutral800),
+    ),
+  ),
+  menuButtonTheme: MenuButtonThemeData(
+    style: MenuItemButton.styleFrom(foregroundColor: AppColors.foreground),
+  ),
 );

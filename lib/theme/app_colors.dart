@@ -15,6 +15,8 @@ class AppColors {
 
   static const foreground = Color(0xfff6f6f6);
 
-  static const primary = Color(0xffF97316);
-  static const secondary = Color(0xffc0f7a6);
+  static const primary = Color(0xffFCAC34);
+  static const secondary = Color(0xffab6afd);
+  static const success = Color(0xffc0f7a6);
+  static const danger = Color(0xfffc6a7b);
 }

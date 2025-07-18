@@ -4,7 +4,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:firefly_chat_mobile/theme/app_colors.dart';
 import 'package:firefly_chat_mobile/screens/chat_screen.dart';
 import 'package:firefly_chat_mobile/components/app_drawer.dart';
-import 'package:firefly_chat_mobile/screens/friends_screen.dart';
+import 'package:firefly_chat_mobile/screens/friendships/friends_screen.dart';
 import 'package:firefly_chat_mobile/components/custom_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {

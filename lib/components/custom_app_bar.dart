@@ -8,9 +8,17 @@ import 'package:firefly_chat_mobile/providers/user_provider.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final List<Widget>? actions;
   final void Function()? onOpenDrawer;
+  final bool showAvatar;
 
-  const CustomAppBar({super.key, required this.title, this.onOpenDrawer});
+  const CustomAppBar({
+    super.key,
+    required this.title,
+    this.actions,
+    this.onOpenDrawer,
+    this.showAvatar = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +33,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: AppColors.foreground,
         ),
       ),
-      leading: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: InkWell(
-          onTap: onOpenDrawer,
-          child: Skeletonizer(
-            enabled: user == null,
-            ignoreContainers: true,
-            child: CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(
-                user!.avatarUrl ??
-                    'https://api.dicebear.com/9.x/thumbs/png?seed=${user.name}',
+      leading: showAvatar
+          ? Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: onOpenDrawer,
+                child: Skeletonizer(
+                  enabled: user == null,
+                  ignoreContainers: true,
+                  child: CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                      user!.avatarUrl ??
+                          'https://api.dicebear.com/9.x/thumbs/png?seed=${user.name}',
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
+            )
+          : null,
+      actions: actions,
     );
   }
 
