@@ -1,3 +1,4 @@
+import 'package:firefly_chat_mobile/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -65,7 +66,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               PhosphorIconsFill.checkCircle,
-              color: AppColors.secondary,
+              color: AppColors.success,
             ),
             title: const Text(
               'Disponível',
@@ -79,7 +80,9 @@ class AppDrawer extends StatelessWidget {
               'Notificações',
               style: TextStyle(color: AppColors.foreground),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(AppRoutes.notifications);
+            },
           ),
           ListTile(
             leading: Icon(PhosphorIcons.gear()),
