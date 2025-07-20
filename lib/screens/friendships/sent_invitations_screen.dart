@@ -7,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firefly_chat_mobile/components/custom_app_bar.dart';
 import 'package:firefly_chat_mobile/@exceptions/api_exceptions.dart';
 import 'package:firefly_chat_mobile/components/error_alert_dialog.dart';
-import 'package:firefly_chat_mobile/providers/friendship-provider.dart';
+import 'package:firefly_chat_mobile/providers/friendship_provider.dart';
 import 'package:firefly_chat_mobile/models/value-objects/invitation_with_receiver.dart';
 
 class SentInvitationsScreen extends StatefulWidget {

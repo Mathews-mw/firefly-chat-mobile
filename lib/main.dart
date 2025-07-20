@@ -7,8 +7,9 @@ import 'package:firefly_chat_mobile/theme/theme.dart';
 import 'package:firefly_chat_mobile/screens/home_screen.dart';
 import 'package:firefly_chat_mobile/screens/login_screen.dart';
 import 'package:firefly_chat_mobile/providers/user_provider.dart';
+import 'package:firefly_chat_mobile/providers/chat_provider.dart';
 import 'package:firefly_chat_mobile/screens/notifications_screen.dart';
-import 'package:firefly_chat_mobile/providers/friendship-provider.dart';
+import 'package:firefly_chat_mobile/providers/friendship_provider.dart';
 import 'package:firefly_chat_mobile/providers/notifications_provider.dart';
 import 'package:firefly_chat_mobile/screens/friendships/add_friend_screen.dart';
 import 'package:firefly_chat_mobile/screens/friendships/sent_invitations_screen.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
         ChangeNotifierProvider(create: (_) => FriendshipProvider()),
         ChangeNotifierProvider(create: (_) => NotificationsProvider()),
       ],

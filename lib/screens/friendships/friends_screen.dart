@@ -7,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:firefly_chat_mobile/components/app_drawer.dart';
 import 'package:firefly_chat_mobile/components/custom_app_bar.dart';
-import 'package:firefly_chat_mobile/providers/friendship-provider.dart';
+import 'package:firefly_chat_mobile/providers/friendship_provider.dart';
 
 class FriendsScreen extends StatefulWidget {
   const FriendsScreen({super.key});

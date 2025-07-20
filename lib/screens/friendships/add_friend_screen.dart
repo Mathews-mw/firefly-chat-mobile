@@ -6,7 +6,7 @@ import 'package:firefly_chat_mobile/components/custom_app_bar.dart';
 import 'package:firefly_chat_mobile/@exceptions/api_exceptions.dart';
 import 'package:firefly_chat_mobile/components/custom_text_field.dart';
 import 'package:firefly_chat_mobile/components/error_alert_dialog.dart';
-import 'package:firefly_chat_mobile/providers/friendship-provider.dart';
+import 'package:firefly_chat_mobile/providers/friendship_provider.dart';
 import 'package:firefly_chat_mobile/@mixins/form_validations_mixin.dart';
 
 class AddFriendScreen extends StatefulWidget {

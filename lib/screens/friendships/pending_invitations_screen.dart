@@ -6,7 +6,7 @@ import 'package:firefly_chat_mobile/theme/app_colors.dart';
 import 'package:firefly_chat_mobile/components/custom_app_bar.dart';
 import 'package:firefly_chat_mobile/@exceptions/api_exceptions.dart';
 import 'package:firefly_chat_mobile/components/error_alert_dialog.dart';
-import 'package:firefly_chat_mobile/providers/friendship-provider.dart';
+import 'package:firefly_chat_mobile/providers/friendship_provider.dart';
 import 'package:firefly_chat_mobile/models/value-objects/invitation_with_sender.dart';
 
 class PendingInvitationsScreen extends StatefulWidget {

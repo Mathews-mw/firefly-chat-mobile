@@ -1,4 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firefly_chat_mobile/screens/chat/favorite_chat_list.dart';
+import 'package:firefly_chat_mobile/screens/chat/group_chat_list.dart';
+import 'package:firefly_chat_mobile/screens/chat/private_chat_list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firefly_chat_mobile/components/app_drawer.dart';
@@ -32,17 +35,19 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<Item> _data = <Item>[
     Item(
       headerValue: 'Favoritos',
-      expandedValue: ChatFavoriteSection(),
+      expandedValue: FavoriteChatList(),
       icon: PhosphorIconsFill.star,
+      isExpanded: true,
     ),
     Item(
       headerValue: 'Chats',
-      expandedValue: ChatFavoriteSection(),
+      expandedValue: PrivateChatList(),
       icon: PhosphorIconsFill.chat,
+      isExpanded: true,
     ),
     Item(
       headerValue: 'Canais',
-      expandedValue: ChatFavoriteSection(),
+      expandedValue: GroupChatList(),
       icon: PhosphorIconsFill.chats,
     ),
   ];
@@ -85,40 +90,6 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ChatFavoriteSection extends StatelessWidget {
-  const ChatFavoriteSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(), // impede scroll dentro,
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return ListTile(
-            tileColor: Colors.transparent,
-            leading: CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(
-                'https://api.dicebear.com/9.x/thumbs/png?seed=Mathews',
-              ),
-              radius: 22,
-            ),
-            title: Text('Mathews Araujo'),
-            subtitle: Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-            trailing: Text('7 jul'),
-            onTap: () {},
-          );
-        },
       ),
     );
   }
