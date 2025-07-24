@@ -34,9 +34,9 @@ class HttpService {
         headers: _headers,
       );
 
-      print(
-        "GET Response => Status Code: ${response.statusCode} - body: ${response.body}",
-      );
+      // print(
+      //   "GET Response => Status Code: ${response.statusCode} - body: ${response.body}",
+      // );
 
       return _handleResponse(response);
     } catch (error) {

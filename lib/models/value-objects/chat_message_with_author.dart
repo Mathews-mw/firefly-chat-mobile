@@ -32,7 +32,7 @@ class ChatMessageWithAuthor {
       content: json['content'],
       isDeleted: json['is_deleted'],
       createdAt: DateTime.parse(json['created_at']),
-      updatedAt: json['replied_at'] != null
+      updatedAt: json['updatedAt'] != null
           ? DateTime.parse(json['updated_at'])
           : null,
       author: User.fromJson(json['author']),

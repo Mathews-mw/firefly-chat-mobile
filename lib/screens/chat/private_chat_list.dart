@@ -1,3 +1,5 @@
+import 'package:firefly_chat_mobile/app_routes.dart';
+import 'package:firefly_chat_mobile/screens/private_room/private_room_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -81,7 +83,16 @@ class _PrivateChatListState extends State<PrivateChatList> {
                             _userPrivateRooms[index].chatMessages[0].createdAt,
                           ),
                         ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (ctx) => PrivateRoomScreen(
+                          roomId: _userPrivateRooms[index].id,
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
             ),

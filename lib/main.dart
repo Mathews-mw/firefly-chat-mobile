@@ -1,3 +1,5 @@
+import 'package:firefly_chat_mobile/providers/messages_provider.dart';
+import 'package:firefly_chat_mobile/screens/private_room/private_room_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -32,7 +34,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => ChatProvider()),
+        ChangeNotifierProvider(create: (_) => MessagesProvider()),
+        ChangeNotifierProxyProvider<MessagesProvider, ChatProvider>(
+          create: (_) => ChatProvider(),
+          update: (_, messagesProvider, chatProvider) {
+            chatProvider!.messagesProvider = messagesProvider;
+            return chatProvider;
+          },
+        ),
         ChangeNotifierProvider(create: (_) => FriendshipProvider()),
         ChangeNotifierProvider(create: (_) => NotificationsProvider()),
       ],

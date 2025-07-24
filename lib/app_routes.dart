@@ -1,3 +1,4 @@
+import 'package:firefly_chat_mobile/screens/private_room/private_room_screen.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:firefly_chat_mobile/screens/home_screen.dart';
@@ -14,6 +15,7 @@ class AppRoutes {
   static const pendingInvitations = '/pending-invitations';
   static const sentInvitations = '/sent-invitations';
   static const notifications = '/notifications';
+  static const privateRoom = '/private-room';
 
   static Map<String, Widget Function(BuildContext)> routes = {
     AppRoutes.login: (ctx) => const LoginScreen(),
