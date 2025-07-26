@@ -62,7 +62,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(top: 10, left: 20),
         filled: true,
-        fillColor: AppColors.neutral700,
+        fillColor: AppColors.neutral800,
         hintText: widget.hintText,
         hintStyle: TextStyle(fontSize: 14, color: AppColors.neutral300),
         errorStyle: TextStyle(fontSize: 12, color: Colors.redAccent),
@@ -77,11 +77,20 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             });
           },
         ),
-
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.transparent, width: 2),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.transparent, width: 2),
+        ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: AppColors.primary, width: 2),
+          borderSide: BorderSide(
+            color: Color.fromRGBO(249, 115, 22, 0.4),
+            width: 2,
+          ),
         ),
       ),
     );

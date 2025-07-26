@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:firefly_chat_mobile/models/decorated/chat_message_decorated.dart';
+import 'package:firefly_chat_mobile/screens/private_room/chat_actions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -152,18 +153,6 @@ class _PrivateRoomScreen extends State<PrivateRoomScreen> {
         return;
       }
 
-      final message = ChatMessageWithAuthor(
-        id: widget.roomId,
-        senderId: user.id,
-        content: _formData['message'] as String,
-        isDeleted: false,
-        createdAt: DateTime.now(),
-        author: user,
-        readReceipts: [],
-        attachments: [],
-      );
-
-      await messagesProvider.addMessage(message);
       messagesProvider.sendMessage(
         roomId: widget.roomId,
         message: _formData['message'] as String,
@@ -283,9 +272,9 @@ class _PrivateRoomScreen extends State<PrivateRoomScreen> {
                       reverse: true,
                       itemCount: chatItems.length + (_isLoading ? 1 : 0),
                       itemBuilder: (ctx, index) {
-                        final item = chatItems[index];
-
                         if (index < chatItems.length) {
+                          final item = chatItems[index];
+
                           if (item is ChatDateHeader) {
                             final formattedDate = formatChatDate(item.date);
 
@@ -416,13 +405,7 @@ class _PrivateRoomScreen extends State<PrivateRoomScreen> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      IconButton.filledTonal(
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                        ),
-                        onPressed: () {},
-                        icon: Icon(PhosphorIcons.paperclip()),
-                      ),
+                      ChatActions(),
                       const SizedBox(width: 4),
                       Flexible(
                         child: CustomTextField(

@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'package:firefly_chat_mobile/@types/attachment_type.dart';
+import 'package:firefly_chat_mobile/@types/role.dart';
+import 'package:firefly_chat_mobile/models/attachment.dart';
 import 'package:firefly_chat_mobile/models/decorated/chat_message_decorated.dart';
+import 'package:firefly_chat_mobile/models/user.dart';
 import 'package:firefly_chat_mobile/services/websocket_service.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +51,7 @@ class MessagesProvider with ChangeNotifier {
     return grouped;
   }
 
-  Future<void> addMessage(ChatMessageWithAuthor message) async {
+  addMessage(ChatMessageWithAuthor message) {
     _chatMessages.insert(0, message);
     notifyListeners();
   }
@@ -58,8 +62,50 @@ class MessagesProvider with ChangeNotifier {
     _socketService.on('message', (payload) {
       try {
         print('Resposta do servidor: $payload');
-        // final message = ChatMessageWithAuthor.fromJson(payload);
-        // addMessage(message);
+
+        final chatMessage = ChatMessageWithAuthor(
+          id: payload['message']['id'],
+          senderId: payload['message']['senderId'],
+          content: payload['message']['content'],
+          isDeleted: false,
+          createdAt: DateTime.parse(payload['message']['createdAt']),
+          updatedAt: payload['updatedAt'] != null
+              ? DateTime.parse(payload['updated_at'])
+              : null,
+          author: User(
+            id: payload['message']['author']['id'],
+            name: payload['message']['author']['name'],
+            username: payload['message']['author']['username'],
+            email: payload['message']['author']['email'],
+            avatarUrl: payload['message']['author']['avatarUrl'],
+            role: Role.values.firstWhere(
+              (e) => e.value == payload['message']['author']['role'],
+              orElse: () => Role.member,
+            ),
+            isActive: payload['message']['author']['isActive'],
+            createdAt: DateTime.parse(
+              payload['message']['author']['createdAt'],
+            ),
+          ),
+          readReceipts: [],
+          attachments: (payload['message']['attachments'] as List).map((
+            attachment,
+          ) {
+            return Attachment(
+              id: attachment['id'],
+              title: attachment['title'],
+              url: attachment['url'],
+              messageId: attachment['messageId'],
+              roomId: attachment['roomId'],
+              type: AttachmentType.values.firstWhere(
+                (e) => e.value == attachment['type'],
+                orElse: () => AttachmentType.file,
+              ),
+            );
+          }).toList(),
+        );
+
+        addMessage(chatMessage);
       } catch (e) {
         print('Erro ao processar mensagem recebida via socket: $e');
       }

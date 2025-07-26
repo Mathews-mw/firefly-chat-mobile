@@ -1,5 +1,3 @@
-import 'package:firefly_chat_mobile/providers/messages_provider.dart';
-import 'package:firefly_chat_mobile/screens/private_room/private_room_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -10,6 +8,7 @@ import 'package:firefly_chat_mobile/screens/home_screen.dart';
 import 'package:firefly_chat_mobile/screens/login_screen.dart';
 import 'package:firefly_chat_mobile/providers/user_provider.dart';
 import 'package:firefly_chat_mobile/providers/chat_provider.dart';
+import 'package:firefly_chat_mobile/providers/messages_provider.dart';
 import 'package:firefly_chat_mobile/screens/notifications_screen.dart';
 import 'package:firefly_chat_mobile/providers/friendship_provider.dart';
 import 'package:firefly_chat_mobile/providers/notifications_provider.dart';
